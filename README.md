@@ -8,12 +8,14 @@ Built in Rust, distributed as a Python package via [maturin](https://github.com/
 
 ## Install
 
+Precompiled wheels are attached to each [GitHub Release](https://github.com/curtisalexander/literate-parakeet/releases). Install directly with `uv` — no Rust toolchain required:
+
 ```sh
-# From the repo (via uv)
-uv pip install git+https://github.com/curtisalexander/literate-parakeet.git
+# Install the latest release
+uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/latest/download/
 
 # Or run directly without installing
-uvx --from git+https://github.com/curtisalexander/literate-parakeet.git gather collect .
+uvx --from gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/latest/download/ gather collect .
 ```
 
 ## Usage
