@@ -6,7 +6,7 @@ description = "Fast context gathering for AI coding agents"
 license = "MIT"
 
 [[bin]]
-name = "_gather"
+name = "gather"
 path = "src/main.rs"
 
 [dependencies]

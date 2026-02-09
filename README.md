@@ -71,7 +71,7 @@ python/gather/          # Python wrapper (exec pattern)
   release.yml           # Release: build + publish to PyPI
 ```
 
-The Rust binary (`_gather`) is the core implementation. The Python package provides a thin wrapper that locates and `exec`s the binary, following the pattern described in [Distributing compiled binaries via Python](https://simonwillison.net/2026/Feb/4/distributing-go-binaries/).
+The Rust binary is built by maturin (`bindings = "bin"`) and installed directly into the Python environment's scripts directory. The Python package in `python/gather/` provides a wrapper for `python -m gather` support, following the exec pattern described in [Distributing compiled binaries via Python](https://simonwillison.net/2026/Feb/4/distributing-go-binaries/).
 
 ## Development
 
@@ -80,7 +80,7 @@ The Rust binary (`_gather`) is the core implementation. The Python package provi
 cargo build
 
 # Run directly
-cargo run --bin _gather -- collect . --tokens
+cargo run -- collect . --tokens
 
 # Run tests
 cargo test

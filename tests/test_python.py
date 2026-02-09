@@ -106,6 +106,6 @@ class TestVersion:
 
     def test_binary_name_is_correct(self):
         if sys.platform == "win32":
-            assert gather.BINARY_NAME == "_gather.exe"
+            assert gather.BINARY_NAME == "gather.exe"
         else:
-            assert gather.BINARY_NAME == "_gather"
+            assert gather.BINARY_NAME == "gather"

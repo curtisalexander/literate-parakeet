@@ -9,7 +9,7 @@ from pathlib import Path
 
 __version__ = "0.1.0"
 
-BINARY_NAME = "_gather.exe" if sys.platform == "win32" else "_gather"
+BINARY_NAME = "gather.exe" if sys.platform == "win32" else "gather"
 
 
 def get_binary_path() -> Path:
