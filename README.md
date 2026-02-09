@@ -11,11 +11,26 @@ Built in Rust, distributed as a Python package via [maturin](https://github.com/
 Precompiled wheels are attached to each [GitHub Release](https://github.com/curtisalexander/literate-parakeet/releases). Install directly with `uv` — no Rust toolchain required:
 
 ```sh
-# Install from a specific release (replace v0.1.0 with the desired version)
-uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
+# Install as a standalone CLI tool (recommended — adds `gather` to your PATH)
+uv tool install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
 
 # Or run directly without installing
 uvx --from gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0 gather collect .
+
+# Or install into the current environment
+uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
+```
+
+To upgrade, pass `--upgrade` (or `--reinstall` for the same version):
+
+```sh
+uv tool install --upgrade gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.2.0
+```
+
+To uninstall:
+
+```sh
+uv tool uninstall gather
 ```
 
 ## Usage
@@ -77,14 +92,27 @@ The Rust binary is built by maturin (`bindings = "bin"`) and installed directly 
 
 ## Development
 
+### Rust-only (no Python packaging)
+
 ```sh
-# Build
 cargo build
-
-# Run directly
 cargo run -- collect . --tokens
-
-# Run tests
 cargo test
-pytest tests/
+```
+
+### Full build with uv + maturin
+
+```sh
+# Create a virtual environment and install the maturin build tool
+uv venv
+uv pip install maturin
+
+# Build the Rust binary and install it into the virtual environment
+uv run maturin develop
+
+# Now `gather` is available inside the venv
+uv run gather collect . --tokens
+
+# Run the Python tests
+uv run pytest tests/
 ```
