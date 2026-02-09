@@ -11,11 +11,11 @@ Built in Rust, distributed as a Python package via [maturin](https://github.com/
 Precompiled wheels are attached to each [GitHub Release](https://github.com/curtisalexander/literate-parakeet/releases). Install directly with `uv` — no Rust toolchain required:
 
 ```sh
-# Install the latest release
-uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/latest/download/
+# Install from a specific release (replace v0.1.0 with the desired version)
+uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
 
 # Or run directly without installing
-uvx --from gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/latest/download/ gather collect .
+uvx --from gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0 gather collect .
 ```
 
 ## Usage
