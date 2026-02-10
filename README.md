@@ -8,23 +8,35 @@ Built in Rust, distributed as a Python package via [maturin](https://github.com/
 
 ## Install
 
-Precompiled wheels are attached to each [GitHub Release](https://github.com/curtisalexander/literate-parakeet/releases). Install directly with `uv` — no Rust toolchain required:
+Precompiled wheels are attached to each [GitHub Release](https://github.com/curtisalexander/literate-parakeet/releases). Install directly with `uv` — no Rust toolchain required.
+
+> **Note:** `--no-index` is required because an unrelated `gather` package exists on PyPI. This flag tells `uv` to only look at the `--find-links` URL.
 
 ```sh
 # Install as a standalone CLI tool (recommended — adds `gather` to your PATH)
-uv tool install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
+uv tool install gather \
+  --no-index \
+  --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
 
 # Or run directly without installing
-uvx --from gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0 gather collect .
+uvx \
+  --no-index \
+  --from gather \
+  --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0 \
+  gather collect .
 
 # Or install into the current environment
-uv pip install gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
+uv pip install gather \
+  --no-index \
+  --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.1.0
 ```
 
 To upgrade, pass `--upgrade` (or `--reinstall` for the same version):
 
 ```sh
-uv tool install --upgrade gather --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.2.0
+uv tool install --upgrade gather \
+  --no-index \
+  --find-links https://github.com/curtisalexander/literate-parakeet/releases/expanded_assets/v0.2.0
 ```
 
 To uninstall:
@@ -80,11 +92,19 @@ gather tokens . -g "*.rs"
 Cargo.toml              # Rust project config
 pyproject.toml          # Python/maturin build config (bindings = "bin")
 src/main.rs             # Rust CLI implementation
+python/gather/          # Python package (included in wheel)
+  __init__.py           #   Package metadata
+  __main__.py           #   python -m gather support
 .github/workflows/
   ci.yml                # CI: test + build wheels + release
 ```
 
-The Rust binary is compiled by [maturin](https://www.maturin.rs/) with `bindings = "bin"`. This places the compiled binary directly into the wheel's `data/scripts/` directory. When installed via `pip` or `uv`, the binary lands in the environment's `bin/` directory — no Python wrapper needed.
+Maturin compiles the Rust binary with `bindings = "bin"` and places it in the wheel's `data/scripts/` directory. The `python-source = "python"` setting tells maturin to also include the Python package in the wheel. When installed via `pip` or `uv`:
+
+- The **Rust binary** lands in `bin/` — this is the CLI entry point (`gather collect .`)
+- The **Python package** lands in `site-packages/` — this provides `python -m gather` support and `import gather` for version info
+
+This is the same pattern used by [ruff](https://github.com/astral-sh/ruff).
 
 ## Development
 
@@ -108,4 +128,7 @@ uv run maturin develop
 
 # Now `gather` is available inside the venv
 uv run gather collect . --tokens
+
+# Also works via Python
+uv run python -m gather collect . --tokens
 ```
