@@ -78,17 +78,13 @@ gather tokens . -g "*.rs"
 
 ```
 Cargo.toml              # Rust project config
-pyproject.toml          # Python/maturin build config
+pyproject.toml          # Python/maturin build config (bindings = "bin")
 src/main.rs             # Rust CLI implementation
-python/gather/          # Python wrapper (exec pattern)
-  __init__.py           #   Binary locator + entry point
-  __main__.py           #   python -m gather support
 .github/workflows/
-  ci.yml                # CI: test + build wheels
-  release.yml           # Release: build + publish to PyPI
+  ci.yml                # CI: test + build wheels + release
 ```
 
-The Rust binary is built by maturin (`bindings = "bin"`) and installed directly into the Python environment's scripts directory. The Python package in `python/gather/` provides a wrapper for `python -m gather` support, following the exec pattern described in [Distributing compiled binaries via Python](https://simonwillison.net/2026/Feb/4/distributing-go-binaries/).
+The Rust binary is compiled by [maturin](https://www.maturin.rs/) with `bindings = "bin"`. This places the compiled binary directly into the wheel's `data/scripts/` directory. When installed via `pip` or `uv`, the binary lands in the environment's `bin/` directory — no Python wrapper needed.
 
 ## Development
 
@@ -112,7 +108,4 @@ uv run maturin develop
 
 # Now `gather` is available inside the venv
 uv run gather collect . --tokens
-
-# Run the Python tests
-uv run pytest tests/
 ```
