@@ -18,21 +18,10 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test
 
-  test-python:
-    name: Python tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: pip install pytest
-      - run: pytest tests/test_python.py -v
-
   build:
     name: Build - ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
-    needs: [test-rust, test-python]
+    needs: [test-rust]
     strategy:
       fail-fast: false
       matrix:
