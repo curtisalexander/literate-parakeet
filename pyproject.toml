@@ -13,4 +13,5 @@ requires-python = ">=3.9"
 [tool.maturin]
 bindings = "bin"
 manifest-path = "Cargo.toml"
+python-source = "python"
 strip = true
